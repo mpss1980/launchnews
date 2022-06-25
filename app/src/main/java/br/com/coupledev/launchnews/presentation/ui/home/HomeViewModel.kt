@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.coupledev.launchnews.data.model.Post
-import br.com.coupledev.launchnews.data.repository.MockAPIService
-import br.com.coupledev.launchnews.data.repository.PostRepositoryImpl
 import br.com.coupledev.launchnews.domain.repository.PostRepository
 import kotlinx.coroutines.launch
 
