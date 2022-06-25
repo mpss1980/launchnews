@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    def nav_version = "2.3.5"
+    def nav_version = "2.4.2"
     def koin_version = "3.0.1"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

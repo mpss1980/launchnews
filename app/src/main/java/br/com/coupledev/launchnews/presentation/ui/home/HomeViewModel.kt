@@ -10,9 +10,7 @@ import br.com.coupledev.launchnews.data.repository.PostRepositoryImpl
 import br.com.coupledev.launchnews.domain.repository.PostRepository
 import kotlinx.coroutines.launch
 
-class HomeViewModel: ViewModel() {
-
-    val repository: PostRepository = PostRepositoryImpl(MockAPIService)
+class HomeViewModel(private val repository: PostRepository): ViewModel() {
 
     private val _listPost = MutableLiveData<List<Post>>()
     val listPost: LiveData<List<Post>> get() = _listPost

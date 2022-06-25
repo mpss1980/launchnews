@@ -58,7 +58,7 @@ fun Chip.setHasLaunch(post: Post?) {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@BindingAdapter("postPublisherDate")
+@BindingAdapter("postPublishedDate")
 fun Chip.setUpdate(post: Post?) {
     val formatter = DateTimeFormatter.ofPattern("dd-MM-uuuu")
         .withZone(ZoneId.from(ZoneOffset.UTC))

@@ -6,7 +6,7 @@
         <entry key="app/src/main/res/drawable/gradient_rectangle.xml" value="0.403" />
         <entry key="app/src/main/res/drawable/ic_favorite_24.xml" value="0.402" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.403" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.38958333333333334" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/item_post.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.403" />
