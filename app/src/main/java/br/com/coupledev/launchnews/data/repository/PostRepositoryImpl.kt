@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 
 class PostRepositoryImpl(private val api: SpaceFlightNewsApi) : PostRepository {
-    override suspend fun listPosts(): Flow<List<Post>> = flow {
+    override suspend fun listPosts(category: String): Flow<List<Post>> = flow {
         try {
-            val postList = api.listPosts()
+            val postList = api.listPosts(category)
             emit(postList)
         } catch (ex: HttpException) {
             throw RemoteException("Unable to connect to SpaceFlightNews API")

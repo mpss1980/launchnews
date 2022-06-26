@@ -3,6 +3,7 @@ package br.com.coupledev.launchnews.presentation.ui.home
 import androidx.lifecycle.*
 import br.com.coupledev.launchnews.core.RemoteException
 import br.com.coupledev.launchnews.core.State
+import br.com.coupledev.launchnews.data.enums.SpaceFlightNewsCategory
 import br.com.coupledev.launchnews.data.model.Post
 import br.com.coupledev.launchnews.domain.usecases.GetLatestPostUseCase
 import kotlinx.coroutines.delay
@@ -27,7 +28,7 @@ class HomeViewModel(private val getLatestPostUseCase: GetLatestPostUseCase) : Vi
 
     private fun fetchPosts() {
         viewModelScope.launch {
-            getLatestPostUseCase()
+            getLatestPostUseCase(SpaceFlightNewsCategory.ARTICLES.value)
                 .onStart {
                     _listPost.postValue(State.Loading)
                     delay(800)

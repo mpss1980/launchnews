@@ -70,7 +70,13 @@ dependencies {
 
     //Retrofit & OkHttp
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation('com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3')
+    //noinspection GradleDependency
+    implementation('com.squareup.okhttp3:logging-interceptor:4.10.0')
+
+    //MockWebService
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
+    //noinspection GradleDependency
+    testImplementation("com.squareup.okhttp3:okhttp:4.10.0")
 
     //Moshi - Json mapping
     implementation('com.squareup.moshi:moshi-kotlin:1.12.0')

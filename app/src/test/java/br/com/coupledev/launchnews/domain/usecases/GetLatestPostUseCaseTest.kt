@@ -1,6 +1,7 @@
 package br.com.coupledev.launchnews.domain.usecases
 
 import br.com.coupledev.launchnews.configureTestAppComponent
+import br.com.coupledev.launchnews.data.enums.SpaceFlightNewsCategory
 import br.com.coupledev.launchnews.data.model.Post
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -33,7 +34,7 @@ class GetLatestPostUseCaseTest : KoinTest {
     @Test
     fun shouldReturnNotNullConnectingWithRepository() {
         runBlocking {
-            val result = getLatestPostUseCase()
+            val result = getLatestPostUseCase(SpaceFlightNewsCategory.ARTICLES.value)
             assertNotNull(result)
         }
     }
@@ -41,7 +42,7 @@ class GetLatestPostUseCaseTest : KoinTest {
     @Test
     fun shouldReturnACorrectObjectTypeFromRepository() {
         runBlocking {
-            val result = getLatestPostUseCase()
+            val result = getLatestPostUseCase(SpaceFlightNewsCategory.ARTICLES.value)
             assertTrue(result is Flow<List<Post>>)
         }
     }
@@ -49,7 +50,7 @@ class GetLatestPostUseCaseTest : KoinTest {
     @Test
     fun shouldReturnNotEmptyFromRepository() {
         runBlocking {
-            val result = getLatestPostUseCase()
+            val result = getLatestPostUseCase(SpaceFlightNewsCategory.ARTICLES.value)
             assertFalse(result.first().isEmpty())
         }
     }
