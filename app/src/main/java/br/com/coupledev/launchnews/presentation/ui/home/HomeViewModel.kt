@@ -4,13 +4,13 @@ import androidx.lifecycle.*
 import br.com.coupledev.launchnews.core.RemoteException
 import br.com.coupledev.launchnews.core.State
 import br.com.coupledev.launchnews.data.model.Post
-import br.com.coupledev.launchnews.domain.repository.PostRepository
+import br.com.coupledev.launchnews.domain.usecases.GetLatestPostUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repository: PostRepository) : ViewModel() {
+class HomeViewModel(private val getLatestPostUseCase: GetLatestPostUseCase) : ViewModel() {
 
     private val _listPost = MutableLiveData<State<List<Post>>>()
     val listPost: LiveData<State<List<Post>>> get() = _listPost
@@ -27,7 +27,7 @@ class HomeViewModel(private val repository: PostRepository) : ViewModel() {
 
     private fun fetchPosts() {
         viewModelScope.launch {
-            repository.listPosts()
+            getLatestPostUseCase.execute()
                 .onStart {
                     _listPost.postValue(State.Loading)
                     delay(800)
