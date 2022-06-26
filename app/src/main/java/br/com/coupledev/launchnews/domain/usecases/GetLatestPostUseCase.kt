@@ -5,7 +5,7 @@ import br.com.coupledev.launchnews.data.model.Post
 import br.com.coupledev.launchnews.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetLatestPostUseCase(private val repository: PostRepository) :Usecase<List<Post>>() {
+class GetLatestPostUseCase(private val repository: PostRepository) :Usecase.NoParam<List<Post>>() {
 
     override suspend fun execute(): Flow<List<Post>> = repository.listPosts()
 }

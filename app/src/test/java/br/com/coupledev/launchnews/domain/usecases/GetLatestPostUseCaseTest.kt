@@ -33,7 +33,7 @@ class GetLatestPostUseCaseTest : KoinTest {
     @Test
     fun shouldReturnNotNullConnectingWithRepository() {
         runBlocking {
-            val result = getLatestPostUseCase.execute()
+            val result = getLatestPostUseCase()
             assertNotNull(result)
         }
     }
@@ -41,7 +41,7 @@ class GetLatestPostUseCaseTest : KoinTest {
     @Test
     fun shouldReturnACorrectObjectTypeFromRepository() {
         runBlocking {
-            val result = getLatestPostUseCase.execute()
+            val result = getLatestPostUseCase()
             assertTrue(result is Flow<List<Post>>)
         }
     }
@@ -49,7 +49,7 @@ class GetLatestPostUseCaseTest : KoinTest {
     @Test
     fun shouldReturnNotEmptyFromRepository() {
         runBlocking {
-            val result = getLatestPostUseCase.execute()
+            val result = getLatestPostUseCase()
             assertFalse(result.first().isEmpty())
         }
     }
