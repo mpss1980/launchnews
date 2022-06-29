@@ -42,17 +42,57 @@ class SpaceFlightNewsApiTest {
     fun shouldCallCorrectEndpointAccordingToParameterReceived() {
         runBlocking {
             mockWebServer.enqueue(MockResponse().setBody("[]"))
-            val result1 = api.listPosts(SpaceFlightNewsCategory.ARTICLES.value)
+            api.listPosts(SpaceFlightNewsCategory.ARTICLES.value)
             val request1 = mockWebServer.takeRequest()
             assertEquals(request1.path, "/articles")
 
             mockWebServer.enqueue(MockResponse().setBody("[]"))
-            val result2 = api.listPosts(SpaceFlightNewsCategory.BLOGS.value)
+            api.listPosts(SpaceFlightNewsCategory.BLOGS.value)
             val request2 = mockWebServer.takeRequest()
             assertEquals(request2.path, "/blogs")
 
             mockWebServer.enqueue(MockResponse().setBody("[]"))
-            val result3 = api.listPosts(SpaceFlightNewsCategory.REPORTS.value)
+            api.listPosts(SpaceFlightNewsCategory.REPORTS.value)
+            val request3 = mockWebServer.takeRequest()
+            assertEquals(request3.path, "/reports")
+        }
+    }
+
+    @Test
+    fun shouldCallCorrectEndpointAccordingToParameterReceivedWithOptions() {
+        runBlocking {
+            mockWebServer.enqueue(MockResponse().setBody("[]"))
+            api.listPostsTitleContains(SpaceFlightNewsCategory.ARTICLES.value, "mars")
+            val request1 = mockWebServer.takeRequest()
+            assertEquals(request1.path, "/articles?title_contains=mars")
+
+            mockWebServer.enqueue(MockResponse().setBody("[]"))
+            api.listPostsTitleContains(SpaceFlightNewsCategory.BLOGS.value, "mars")
+            val request2 = mockWebServer.takeRequest()
+            assertEquals(request2.path, "/blogs?title_contains=mars")
+
+            mockWebServer.enqueue(MockResponse().setBody("[]"))
+            api.listPostsTitleContains(SpaceFlightNewsCategory.REPORTS.value, "mars")
+            val request3 = mockWebServer.takeRequest()
+            assertEquals(request3.path, "/reports?title_contains=mars")
+        }
+    }
+
+    @Test
+    fun shouldCallCorrectEndpointAccordingToParameterReceivedWithOptionsNull() {
+        runBlocking {
+            mockWebServer.enqueue(MockResponse().setBody("[]"))
+            api.listPostsTitleContains(SpaceFlightNewsCategory.ARTICLES.value, null)
+            val request1 = mockWebServer.takeRequest()
+            assertEquals(request1.path, "/articles")
+
+            mockWebServer.enqueue(MockResponse().setBody("[]"))
+            api.listPostsTitleContains(SpaceFlightNewsCategory.BLOGS.value, null)
+            val request2 = mockWebServer.takeRequest()
+            assertEquals(request2.path, "/blogs")
+
+            mockWebServer.enqueue(MockResponse().setBody("[]"))
+            api.listPostsTitleContains(SpaceFlightNewsCategory.REPORTS.value, null)
             val request3 = mockWebServer.takeRequest()
             assertEquals(request3.path, "/reports")
         }
