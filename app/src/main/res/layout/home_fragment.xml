@@ -20,6 +20,17 @@
             android:layout_height="match_parent"
             android:background="@color/medium_gray">
 
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/homeToolbar"
+                style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/gradient_rectangle"
+                app:layout_constraintStart_toStartOf="parent"
+                toolbarTitle="@{viewModel.category}"
+                tools:title="@string/latest_news"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/tvError"
                 android:fontFamily="@font/noto_serif_bold"
@@ -36,16 +47,16 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvHome"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/homeToolbar"
                 app:layout_constraintVertical_bias="0.0"
-                tools:listitem="@layout/item_post"
-                android:layout_width="0dp"
-                android:layout_height="0dp" />
+                tools:listitem="@layout/item_post" />
 
             <ProgressBar
                 android:layout_width="wrap_content"

@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Transformations
-import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.coupledev.launchnews.R
 import br.com.coupledev.launchnews.core.State
+import br.com.coupledev.launchnews.data.enums.SpaceFlightNewsCategory
 import br.com.coupledev.launchnews.databinding.HomeFragmentBinding
 import br.com.coupledev.launchnews.presentation.adapters.PostListAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -24,13 +23,32 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initBinding()
         initSnackbar()
-        intiRecyclerView()
+        initRecyclerView()
+        initOptionMenu()
         return binding.root
     }
 
     private fun initBinding() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    private fun initOptionMenu() {
+        with(binding.homeToolbar) {
+            this.inflateMenu(R.menu.menu)
+            menu.findItem(R.id.actionGetArticles).setOnMenuItemClickListener {
+                viewModel.fetchLatest(SpaceFlightNewsCategory.ARTICLES)
+                true
+            }
+            menu.findItem(R.id.actionGetBlogs).setOnMenuItemClickListener {
+                viewModel.fetchLatest(SpaceFlightNewsCategory.BLOGS)
+                true
+            }
+            menu.findItem(R.id.actionGetReports).setOnMenuItemClickListener {
+                viewModel.fetchLatest(SpaceFlightNewsCategory.REPORTS)
+                true
+            }
+        }
     }
 
     private fun initSnackbar() {
@@ -42,7 +60,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun intiRecyclerView() {
+    private fun initRecyclerView() {
         val adapter = PostListAdapter()
         binding.rvHome.adapter = adapter
 

@@ -22,13 +22,22 @@ class HomeViewModel(private val getLatestPostUseCase: GetLatestPostUseCase) : Vi
     private val _snackbar = MutableLiveData<String?>(null)
     val snackbar: LiveData<String?> get() = _snackbar
 
+    private val _category = MutableLiveData<SpaceFlightNewsCategory>().apply {
+        value = SpaceFlightNewsCategory.ARTICLES
+    }
+    val category: LiveData<SpaceFlightNewsCategory> get() = _category
+
     init {
-        fetchPosts()
+        fetchLatest(_category.value ?: SpaceFlightNewsCategory.ARTICLES)
     }
 
-    private fun fetchPosts() {
+    fun fetchLatest(category: SpaceFlightNewsCategory) {
+        fetchPosts(category.value)
+    }
+
+    private fun fetchPosts(query: String) {
         viewModelScope.launch {
-            getLatestPostUseCase(SpaceFlightNewsCategory.ARTICLES.value)
+            getLatestPostUseCase(query)
                 .onStart {
                     _listPost.postValue(State.Loading)
                     delay(800)
@@ -40,6 +49,7 @@ class HomeViewModel(private val getLatestPostUseCase: GetLatestPostUseCase) : Vi
                 }
                 .collect { listPost ->
                     _listPost.postValue(State.Success(listPost))
+                    _category.value = enumValueOf<SpaceFlightNewsCategory>(query.uppercase())
                 }
         }
     }
@@ -57,10 +67,16 @@ class HomeViewModel(private val getLatestPostUseCase: GetLatestPostUseCase) : Vi
     }
 
     val errorText = Transformations.map(listPost) { state ->
-        when(state) {
-            State.Loading -> { "Loading latest news..." }
-            is State.Error -> { "Houston we've had a problem!" }
-            else -> { "" }
+        when (state) {
+            State.Loading -> {
+                "Loading latest news..."
+            }
+            is State.Error -> {
+                "Houston we've had a problem!"
+            }
+            else -> {
+                ""
+            }
         }
     }
 
