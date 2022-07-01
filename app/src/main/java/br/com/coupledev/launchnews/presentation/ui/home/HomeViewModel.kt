@@ -1,17 +1,23 @@
 package br.com.coupledev.launchnews.presentation.ui.home
 
 import androidx.lifecycle.*
+import br.com.coupledev.launchnews.core.Query
 import br.com.coupledev.launchnews.core.RemoteException
 import br.com.coupledev.launchnews.core.State
 import br.com.coupledev.launchnews.data.enums.SpaceFlightNewsCategory
 import br.com.coupledev.launchnews.data.model.Post
+import br.com.coupledev.launchnews.domain.usecases.GetLatestPostTitleContainsUseCase
 import br.com.coupledev.launchnews.domain.usecases.GetLatestPostUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val getLatestPostUseCase: GetLatestPostUseCase) : ViewModel() {
+class HomeViewModel(
+    private val getLatestPostUseCase: GetLatestPostUseCase,
+    private val getLatestPostTitleContainsUseCase: GetLatestPostTitleContainsUseCase,
+) : ViewModel() {
 
     private val _listPost = MutableLiveData<State<List<Post>>>()
     val listPost: LiveData<State<List<Post>>> get() = _listPost
@@ -32,10 +38,14 @@ class HomeViewModel(private val getLatestPostUseCase: GetLatestPostUseCase) : Vi
     }
 
     fun fetchLatest(category: SpaceFlightNewsCategory) {
-        fetchPosts(category.value)
+        fetchPosts(Query(category.value))
     }
 
-    private fun fetchPosts(query: String) {
+    fun searchPostsTitleContains(searchString: String) {
+        fetchPostsTitleContains(Query(_category.value.toString(), searchString))
+    }
+
+    private fun fetchPosts(query: Query) {
         viewModelScope.launch {
             getLatestPostUseCase(query)
                 .onStart {
@@ -49,7 +59,25 @@ class HomeViewModel(private val getLatestPostUseCase: GetLatestPostUseCase) : Vi
                 }
                 .collect { listPost ->
                     _listPost.postValue(State.Success(listPost))
-                    _category.value = enumValueOf<SpaceFlightNewsCategory>(query.uppercase())
+                    _category.value = enumValueOf<SpaceFlightNewsCategory>(query.type.uppercase())
+                }
+        }
+    }
+
+    private fun fetchPostsTitleContains(query: Query) {
+        viewModelScope.launch {
+            getLatestPostTitleContainsUseCase(query)
+                .onStart {
+                    _listPost.postValue(State.Loading)
+                }
+                .catch {
+                    val exception = RemoteException("Unable to connect to SpaceFlightNews API")
+                    _listPost.postValue(State.Error(exception))
+                    _snackbar.value = exception.message
+                }
+                .collect { listPost ->
+                    _listPost.postValue(State.Success(listPost))
+                    _category.value = enumValueOf<SpaceFlightNewsCategory>(query.type.uppercase())
                 }
         }
     }

@@ -11,13 +11,15 @@ import org.junit.AfterClass
 import org.junit.Assert.*
 import org.junit.BeforeClass
 import org.junit.Test
-import org.koin.core.component.inject
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
+import org.koin.test.inject
 
-class GetLatestPostUseCaseTest : KoinTest {
+class GetLatestPostTitleContainsUseCaseTest : KoinTest {
 
-    val getLatestPostUseCase: GetLatestPostUseCase by inject()
+    val getLatestPostTitleContainsUseCase: GetLatestPostTitleContainsUseCase by inject()
+    private val type = SpaceFlightNewsCategory.ARTICLES.value
+    private val searchString = "mars"
 
     companion object {
         @BeforeClass
@@ -35,7 +37,7 @@ class GetLatestPostUseCaseTest : KoinTest {
     @Test
     fun shouldReturnNotNullConnectingWithRepository() {
         runBlocking {
-            val result = getLatestPostUseCase(Query(SpaceFlightNewsCategory.ARTICLES.value))
+            val result = getLatestPostTitleContainsUseCase(Query(SpaceFlightNewsCategory.ARTICLES.value))
             assertNotNull(result)
         }
     }
@@ -43,7 +45,7 @@ class GetLatestPostUseCaseTest : KoinTest {
     @Test
     fun shouldReturnACorrectObjectTypeFromRepository() {
         runBlocking {
-            val result = getLatestPostUseCase(Query(SpaceFlightNewsCategory.ARTICLES.value))
+            val result = getLatestPostTitleContainsUseCase(Query(SpaceFlightNewsCategory.ARTICLES.value))
             assertTrue(result is Flow<List<Post>>)
         }
     }
@@ -51,8 +53,20 @@ class GetLatestPostUseCaseTest : KoinTest {
     @Test
     fun shouldReturnNotEmptyFromRepository() {
         runBlocking {
-            val result = getLatestPostUseCase(Query(SpaceFlightNewsCategory.ARTICLES.value))
+            val result = getLatestPostTitleContainsUseCase(Query(SpaceFlightNewsCategory.ARTICLES.value))
             assertFalse(result.first().isEmpty())
+        }
+    }
+
+    @Test
+    fun shouldReturnValidResultsWhenItSearches() {
+        runBlocking {
+            val result = getLatestPostTitleContainsUseCase(Query(type, searchString))
+            var assertion = true
+            result.first().forEach { post ->
+                assertion = assertion && post.title.lowercase().contains(searchString)
+            }
+            assertTrue(assertion)
         }
     }
 

@@ -3,6 +3,7 @@ package br.com.coupledev.launchnews
 import br.com.coupledev.launchnews.data.api.SpaceFlightNewsApi
 import br.com.coupledev.launchnews.data.repository.PostRepositoryImpl
 import br.com.coupledev.launchnews.domain.repository.PostRepository
+import br.com.coupledev.launchnews.domain.usecases.GetLatestPostTitleContainsUseCase
 import br.com.coupledev.launchnews.domain.usecases.GetLatestPostUseCase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -12,6 +13,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 fun configureDomainModulesForTest() = module {
     factory<GetLatestPostUseCase> { GetLatestPostUseCase(get()) }
+    factory<GetLatestPostTitleContainsUseCase> { GetLatestPostTitleContainsUseCase(get()) }
 }
 
 fun configureDataModelForTest(baseUrl: String) = module {

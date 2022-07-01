@@ -1,5 +1,6 @@
 package br.com.coupledev.launchnews.domain.di
 
+import br.com.coupledev.launchnews.domain.usecases.GetLatestPostTitleContainsUseCase
 import br.com.coupledev.launchnews.domain.usecases.GetLatestPostUseCase
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
@@ -14,6 +15,7 @@ object DomainModule {
     private fun useCaseModule(): Module {
         return module {
             factory { GetLatestPostUseCase(get()) }
+            factory { GetLatestPostTitleContainsUseCase(get()) }
         }
     }
 }
